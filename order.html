@@ -4,42 +4,100 @@
 <meta charset="UTF-8">
 <title>Dolphins order</title>
 <script tyep="text/javascript">
+var members = [
+
+	{ 4:"瑛太", 5:"来輝", 6:"煌太" },
+	{ 7:"拓英", 8:"颯也", 9:"源臣", 10:"玲央", 11:"理人" },
+	{ 12:"恭平", 13:"駿太" }
+
+];
+
+function addPoint(id) {
+	let points = document.getElementById(id + "-point");
+	points.value++; 
+}
+function delPoint(id) {
+	let points = document.getElementById(id + "-point");
+	points.value--; 
+}
+
 window.onload = function(){
-
-	var member = [
-
-		{ 4:"瑛太", 5:"来輝", 6:"煌太" },
-		{ 7:"拓英", 8:"颯也", 9:"源臣", 10:"玲央", 11:"理人" },
-		{ 12:"恭平", 13:"駿太" }
-
-	];
-
 	var table = document.createElement("table");
 	//table.border = 1;
-	for ( i =0; i < member.length; i++ ) {
-		for ( var key in member[i] ) {
-			tr  = table.insertRow(-1);
+
+	//## Table Header
+	tr = table.insertRow(-1);
+	for ( i=0; i<2; i++ ){
+		th = document.createElement("th");
+		tr.appendChild(th);
+	}
+
+	// Quarter
+	for ( i=1; i<=4; i++ ){
+		th = document.createElement("th");
+		th.innerHTML = i;
+		tr.appendChild(th);
+	}
+
+	for ( i=0; i<2; i++ ){
+		th = document.createElement("th");
+		tr.appendChild(th);
+	}
+
+	// Points made
+	th = document.createElement("th");
+	th.innerHTML = "PTS";
+	tr.appendChild(th);
+
+	//## Table Body
+	for ( i =0; i < members.length; i++ ) {
+		for ( var key in members[i] ) {
+			tr = table.insertRow(-1);
 			tr.insertCell(-1).innerHTML = key;
-			tr.insertCell(-1).innerHTML = member[i][key];
-			for ( q = 1; q <= 4; q++ ) {
+			tr.insertCell(-1).innerHTML = members[i][key];
+			for ( q = 1; q <= 5; q++ ) {
 				td = tr.insertCell(-1);
-				const cb = document.createElement("input");
-				cb.setAttribute("type", "checkbox");
-				cb.setAttribute("value", key + "." + q);
-				td.appendChild(cb);
+				chkbx = document.createElement("input");
+				chkbx.setAttribute("type", "checkbox");
+				chkbx.setAttribute("value", key + "." + q);
+				td.appendChild(chkbx);
 			}
+
+			td = tr.insertCell(-1);
+			btn = document.createElement("input");
+			btn.setAttribute("type", "button");
+			btn.setAttribute("name", key);
+			btn.setAttribute("value", "－"); 
+			btn.setAttribute("onclick", "delPoint(this.name)"); 
+			td.appendChild(btn);
+
+			td = tr.insertCell(-1);
+			txt = document.createElement("input");
+			txt.setAttribute("type", "text");
+			txt.setAttribute("id", key + "-point");
+			txt.setAttribute("size", "1");
+			txt.setAttribute("value", 0);
+			td.appendChild(txt);
+
+			td = tr.insertCell(-1);
+			btn = document.createElement("input");
+			btn.setAttribute("type", "button");
+			btn.setAttribute("name", key);
+			btn.setAttribute("value", "＋"); 
+			btn.setAttribute("onclick", "addPoint(this.name)"); 
+			td.appendChild(btn);
 		}
+
+		// Spacing between school year
 		tr = table.insertRow(-1);
-		for ( q = 1; q <= 6; q++ ) {
-			td = tr.insertCell(-1).innerHTML = "<center>----</center>";
-		}
-	}	
+		td = tr.insertCell(-1).innerHTML = "----";
+	}
 	document.getElementById("tableID").appendChild(table);
 }
 </script>
 </head>
 <body>
-<form>
+<form name="score">
 <div id="tableID"></div>
 </form>
 </body>
