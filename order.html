@@ -8,8 +8,9 @@ var members = [
 
 	{ 4:"瑛太", 5:"来輝", 6:"煌太" },
 	{ 7:"拓英", 8:"颯也", 9:"源臣", 10:"玲央", 11:"理人" },
-	{ 12:"恭平", 13:"駿太" }
-
+	{ 12:"恭平", 13:"駿太" },
+	{ 14:"桐詩", 15:"虎人", 17:"幸奨" },
+	{ 16:"隆之介", 18:"輝央", 19:"純平", 20:"颯太" }
 ];
 
 function addPoint(id) {
@@ -27,7 +28,7 @@ window.onload = function(){
 
 	//## Table Header
 	tr = table.insertRow(-1);
-	for ( i=0; i<2; i++ ){
+	for ( i=0; i<3; i++ ){
 		th = document.createElement("th");
 		tr.appendChild(th);
 	}
@@ -53,12 +54,20 @@ window.onload = function(){
 	for ( i =0; i < members.length; i++ ) {
 		for ( var key in members[i] ) {
 			tr = table.insertRow(-1);
+
 			tr.insertCell(-1).innerHTML = key;
+			chkbx = document.createElement("input");
+			chkbx.setAttribute("type", "checkbox");
+			chkbx.setAttribute("name", "out");
+			chkbx.setAttribute("value", key);
+			tr.insertCell(-1).appendChild(chkbx);
+
 			tr.insertCell(-1).innerHTML = members[i][key];
 			for ( q = 1; q <= 5; q++ ) {
 				td = tr.insertCell(-1);
 				chkbx = document.createElement("input");
 				chkbx.setAttribute("type", "checkbox");
+				chkbx.setAttribute("id", key + "." + q);
 				chkbx.setAttribute("value", key + "." + q);
 				td.appendChild(chkbx);
 			}
@@ -66,7 +75,7 @@ window.onload = function(){
 			td = tr.insertCell(-1);
 			btn = document.createElement("input");
 			btn.setAttribute("type", "button");
-			btn.setAttribute("name", key);
+			btn.setAttribute("id", key + "-out");
 			btn.setAttribute("value", "－"); 
 			btn.setAttribute("onclick", "delPoint(this.name)"); 
 			td.appendChild(btn);
@@ -94,11 +103,20 @@ window.onload = function(){
 	}
 	document.getElementById("tableID").appendChild(table);
 }
+
+function save(){
+	for (i=0; i<document.score.out.length; i++){
+		if(document.score.out[i].checked){ 
+			console.log(document.score.out[i].value);
+		}
+	}
+}
 </script>
 </head>
 <body>
 <form name="score">
 <div id="tableID"></div>
+<input type="button" value="save" onclick=save()>
 </form>
 </body>
 </html>
