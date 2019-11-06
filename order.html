@@ -33,15 +33,14 @@ window.onload = function(){
 	}
 
 	//## Table Body
-	for ( i =0; i < members.length; i++ ) {
+	for ( i=0; i<members.length; i++ ) {
 		for ( var key in members[i] ) {
 			tr = table.insertRow(-1);
 
 			tr.insertCell(-1).innerHTML = key;
 			chkbx = document.createElement("input");
 			chkbx.setAttribute("type", "checkbox");
-			chkbx.setAttribute("name", "out");
-			chkbx.setAttribute("value", key);
+			chkbx.setAttribute("id", key);
 			tr.insertCell(-1).appendChild(chkbx);
 
 			tr.insertCell(-1).innerHTML = members[i][key];
@@ -50,7 +49,6 @@ window.onload = function(){
 				chkbx = document.createElement("input");
 				chkbx.setAttribute("type", "checkbox");
 				chkbx.setAttribute("id", key + "." + q);
-				//chkbx.setAttribute("value", key + "." + q);
 				td.appendChild(chkbx);
 			}
 		}
@@ -64,27 +62,36 @@ window.onload = function(){
 
 function save(){
 	var table = document.getElementById("tableID1");
-	var j=0;
 	for ( i=0; i<members.length; i++ ) {
 		for ( var key in members[i] ) {
-			j++;
 			for ( q = 1; q <= 5; q++ ) {
 				var chkbx = document.getElementById(key + "." + q);
-				chkbx.setAttribute("onclick", "return false;");					}
+				chkbx.setAttribute("onclick", "return false;");
+			}
 		}
-		j++;
 	}
 }
 
 function edit(){
 	var table = document.getElementById("tableID1");
-	var j=0;
 	for ( i=0; i<members.length; i++ ) {
 		for ( var key in members[i] ) {
-			j++;
 			for ( q = 1; q <= 5; q++ ) {
 				var chkbx = document.getElementById(key + "." + q);
 				chkbx.setAttribute("onclick", "return true;");
+			}
+		}
+	}
+}
+
+function memberfilter(){
+	var table = document.getElementById("tableID1");
+	var j = 0;
+	for ( i=0; i<members.length; i++ ) {
+		for ( var key in members[i] ) {
+			j++;
+			if (!document.getElementById(key).checked){
+				table.deleteRow(j);
 			}
 		}
 		j++;
@@ -95,6 +102,7 @@ function edit(){
 <body>
 <form name="score">
 <div id="tableID"></div>
+<p><input type="button" value="filter" onclick=memberfilter()></p>
 <p><input type="button" value="save" onclick=save()></p>
 <p><input type="button" value="edit" onclick=edit()></p>
 </form>
