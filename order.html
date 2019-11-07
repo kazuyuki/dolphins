@@ -41,10 +41,12 @@ window.onload = function(){
 			chkbx = document.createElement("input");
 			chkbx.setAttribute("type", "checkbox");
 			chkbx.setAttribute("id", key);
+			chkbx.setAttribute("name", "out");
+			chkbx.setAttribute("value", key);
 			tr.insertCell(-1).appendChild(chkbx);
 
 			tr.insertCell(-1).innerHTML = members[i][key];
-			for ( q = 1; q <= 5; q++ ) {
+			for ( q = 1; q <= 6; q++ ) {
 				td = tr.insertCell(-1);
 				chkbx = document.createElement("input");
 				chkbx.setAttribute("type", "checkbox");
@@ -92,6 +94,7 @@ function memberfilter(){
 			j++;
 			if (!document.getElementById(key).checked){
 				table.deleteRow(j);
+				j--;
 			}
 		}
 		j++;
