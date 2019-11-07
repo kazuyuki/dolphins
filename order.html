@@ -64,6 +64,17 @@ window.onload = function(){
 
 function save(){
 	var table = document.getElementById("tableID1");
+	for ( i=0; i<table.rows.length; i++ ) {
+		for ( j=0; j<table.rows[i].cells.length; j++ ) {
+			console.log(table.rows[i].cells[j].innerHTML);
+			//var chkbx = document.getElementById(key + "." + q);
+			//chkbx.setAttribute("onclick", "return false;");
+		}
+	}
+}
+
+function save_old(){
+	var table = document.getElementById("tableID1");
 	for ( i=0; i<members.length; i++ ) {
 		for ( var key in members[i] ) {
 			for ( q = 1; q <= 5; q++ ) {
