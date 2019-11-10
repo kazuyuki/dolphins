@@ -10,7 +10,7 @@ var members = [
 	{ 7:"拓英", 8:"颯也", 9:"源臣", 10:"玲央", 11:"理人" },
 	{ 12:"恭平", 13:"駿太" },
 	{ 14:"桐詩", 15:"虎人", 17:"幸奨" },
-	{ 16:"隆之介", 18:"輝央", 19:"純平", 20:"颯太" }
+	{ 16:"隆乃介", 18:"輝央", 19:"颯太", 20:"純平" }
 ];
 
 window.onload = function(){
@@ -41,8 +41,6 @@ window.onload = function(){
 			chkbx = document.createElement("input");
 			chkbx.setAttribute("type", "checkbox");
 			chkbx.setAttribute("id", key);
-			chkbx.setAttribute("name", "out");
-			chkbx.setAttribute("value", key);
 			tr.insertCell(-1).appendChild(chkbx);
 
 			tr.insertCell(-1).innerHTML = members[i][key];
@@ -62,52 +60,100 @@ window.onload = function(){
 	document.getElementById("tableID").appendChild(table);
 }
 
-function save(){
+function freeze(){
 	var table = document.getElementById("tableID1");
 	for ( i=0; i<members.length; i++ ) {
 		for ( var key in members[i] ) {
 			for ( q = 1; q <= 5; q++ ) {
-				var chkbx = document.getElementById(key + "." + q);
-				chkbx.setAttribute("onclick", "return false;");
+				if (( chkbx = document.getElementById(key + "." + q)) != null ){
+					chkbx.setAttribute("onclick", "return false;");
+				}
 			}
 		}
 	}
 }
 
-function edit(){
+function defreeze(){
 	var table = document.getElementById("tableID1");
 	for ( i=0; i<members.length; i++ ) {
 		for ( var key in members[i] ) {
 			for ( q = 1; q <= 5; q++ ) {
-				var chkbx = document.getElementById(key + "." + q);
-				chkbx.setAttribute("onclick", "return true;");
+				if (( chkbx = document.getElementById(key + "." + q)) != null ){
+					chkbx.setAttribute("onclick", "return true;");
+				}
 			}
 		}
 	}
 }
 
-function memberfilter(){
+function member_filter(){
 	var table = document.getElementById("tableID1");
 	var j = 0;
 	for ( i=0; i<members.length; i++ ) {
 		for ( var key in members[i] ) {
-			j++;
-			if (!document.getElementById(key).checked){
-				table.deleteRow(j);
-				j--;
+			if ( document.getElementById(key) != null ){
+				j++;
+				if (!document.getElementById(key).checked){
+					table.deleteRow(j);
+					j--;
+				}
 			}
 		}
 		j++;
 	}
 }
+function member_unfilter(){
+	var table = document.getElementById("tableID1");
+	var j = 0;
+	for ( i=0; i<members.length; i++ ) {
+		for ( var key in members[i] ) {
+			j++;
+			if ( document.getElementById(key) == null ){
+
+				tr = table.insertRow(j);
+				tr.insertCell(-1).innerHTML = key;
+				chkbx = document.createElement("input");
+				chkbx.setAttribute("type", "checkbox");
+				chkbx.setAttribute("id", key);
+				tr.insertCell(-1).appendChild(chkbx);
+
+				tr.insertCell(-1).innerHTML = members[i][key];
+				for ( q = 1; q <= 6; q++ ) {
+					td = tr.insertCell(-1);
+					chkbx = document.createElement("input");
+					chkbx.setAttribute("type", "checkbox");
+					chkbx.setAttribute("id", key + "." + q);
+					td.appendChild(chkbx);
+				}
+
+				/*
+				if (!document.getElementById(key).checked){
+					table.deleteRow(j);
+					j--;
+				}
+				*/
+			}
+		}
+		j++;
+	}
+}
+
 </script>
 </head>
 <body>
 <form name="score">
 <div id="tableID"></div>
-<p><input type="button" value="filter" onclick=memberfilter()></p>
-<p><input type="button" value="save" onclick=save()></p>
-<p><input type="button" value="edit" onclick=edit()></p>
+
+<p><table>
+<tr>
+<td><input type="button" value="filter" onclick=member_filter()> 
+<td><input type="button" value="unfilter" onclick=member_unfilter()>
+</tr>
+<tr>
+<td><input type="button" value="freeze" onclick=freeze()> 
+<td><input type="button" value="defreeze" onclick=defreeze()>
+</tr>
+</table>
 </form>
 </body>
 </html>
