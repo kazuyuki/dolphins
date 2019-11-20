@@ -1,5 +1,58 @@
-<HTML><body>
-<form>
+<HTML>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<script tyep="text/javascript">
+var record = [];
+var text = "";
+function add(){
+	let team = "";
+	let r = document.getElementsByName("team");
+	for(let i=0; i<r.length; i++){
+		if(r[i].checked){
+			team = r[i].value;
+			//console.log(team);
+		}
+	}
+	let number = "";
+	r = document.getElementsByName("number");
+	for(let i=0; i<r.length; i++){
+		if(r[i].checked){
+			number = r[i].value;
+			//console.log(number);
+		}
+	}
+	let stats = "";
+	r = document.getElementsByName("stats");
+	for(let i=0; i<r.length; i++){
+		if(r[i].checked){
+			stats = r[i].value;
+			//console.log(stats);
+		}
+	}
+	record.push(team + " " + number + " " + stats + "\n");
+	disp();
+}
+function del(){
+	record.pop();
+	disp();
+}
+function period(){
+	record.push("----\n");
+	disp();
+}
+function disp(){
+	text = "";
+	record.slice().reverse().forEach(function(value){
+		text += value;
+	});
+	document.form1.textarea1.value = text;
+}
+
+</script>
+</head>
+<body>
+<form name="form1">
 <table>
 <tr>
 
@@ -60,10 +113,12 @@
 </td>
 
 <td>
-<p><input type="button" name="edit" value="ADD">
-<p><input type="button" name="edit" value="DEL">
+<p><input type="button" value="ADD" style="height:50px;font-weight:bold" onclick=add()>
 </td>
 
 </table>
+<p><input type="button" value="PERIOD" onclick=period()>
+<p><textarea name="textarea1"></textarea>
+<p><input type="button" value="DEL" onclick=del()>
 </form>
 </body></HTML>
