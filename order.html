@@ -14,6 +14,8 @@ var members = [
 	{ 16:"隆乃介", 18:"輝央", 19:"颯太", 20:"純平" }
 ];
 
+var txt = "";
+
 window.onload = function(){
 	var table = document.createElement("table");
 	table.setAttribute("id", "tableID1");
@@ -65,13 +67,37 @@ function freeze(){
 	var table = document.getElementById("tableID1");
 	for ( i=0; i<members.length; i++ ) {
 		for ( var key in members[i] ) {
-			for ( q = 1; q <= 5; q++ ) {
+			for ( q = 1; q <= 6; q++ ) {
 				if (( chkbx = document.getElementById(key + "." + q)) != null ){
 					chkbx.setAttribute("onclick", "return false;");
-				}
+				} 
 			}
 		}
 	}
+
+	var today = new Date();
+	txt = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + "\n\n";
+	txt += "\t1234\n";
+	for ( i=0; i<members.length; i++ ) {
+		for ( var key in members[i] ) {
+			txt += members[i][key] + "\t";
+			for ( q = 1; q <= 6; q++ ) {
+				if ( document.getElementById(key + "." + q) != null ) {
+					if ( document.getElementById(key + "." + q).checked ) {
+						txt += "o";
+					} else {
+						txt += "-";
+					}
+				} else {
+					txt += "-";
+				}
+			}
+			txt += "\n";
+		}
+	}
+	document.getElementById("textarea1").value = txt;
+	document.getElementById("textarea1").select();
+	document.execCommand('copy');
 }
 
 function defreeze(){
@@ -126,13 +152,6 @@ function member_unfilter(){
 					chkbx.setAttribute("id", key + "." + q);
 					td.appendChild(chkbx);
 				}
-
-				/*
-				if (!document.getElementById(key).checked){
-					table.deleteRow(j);
-					j--;
-				}
-				*/
 			}
 		}
 		j++;
@@ -155,6 +174,7 @@ function member_unfilter(){
 <td><input type="button" value="defreeze" onclick=defreeze()>
 </tr>
 </table>
+<p><textarea id="textarea1"></textarea>
 </form>
 </body>
 </html>
