@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<title>Dolphins order</title>
+<script tyep="text/javascript">
+var members = [
+	{ 16:"あおい", 17:"みなと", 18:"きっぺい", 19:"りく", 20:"ゆうき" },
+	{ 21:"たまき", 22:"えいと", 23:"たいせい", 24:"やまと", 25:"だいち" },
+	{ 26:"とうま", 27:"しょうま", 28:"れん" },
+  { 29:"ちさと", 30:"ゆうま", 31:"あおと", 32:"こうせい", 33:"はる", 34:"こうへい", 35:"みくも" }
+];
+
+var txt = "";
+
+window.onload = function(){
+	var table = document.createElement("table");
+	table.setAttribute("id", "tableID1");
+	//table.border = 1;
+
+	//## Table Header
+	tr = table.insertRow(-1);
+	for ( i=0; i<3; i++ ){
+		th = document.createElement("th");
+		tr.appendChild(th);
+	}
+
+	// Quarter
+	for ( i=1; i<=4; i++ ){
+		th = document.createElement("th");
+		th.innerHTML = i;
+		tr.appendChild(th);
+	}
+
+	//## Table Body
+	for ( i=0; i<members.length; i++ ) {
+		for ( var key in members[i] ) {
+			tr = table.insertRow(-1);
+
+			tr.insertCell(-1).innerHTML = key;
+			chkbx = document.createElement("input");
+			chkbx.setAttribute("type", "checkbox");
+			chkbx.setAttribute("id", key);
+			tr.insertCell(-1).appendChild(chkbx);
+
+			tr.insertCell(-1).innerHTML = members[i][key];
+			for ( q = 1; q <= 6; q++ ) {
+				td = tr.insertCell(-1);
+				chkbx = document.createElement("input");
+				chkbx.setAttribute("type", "checkbox");
+				chkbx.setAttribute("id", key + "." + q);
+				td.appendChild(chkbx);
+			}
+		}
+
+		// Spacing between school year
+		tr = table.insertRow(-1);
+		td = tr.insertCell(-1).innerHTML = "----";
+	}
+	document.getElementById("tableID").appendChild(table);
+}
+
+function freeze(){
+	var table = document.getElementById("tableID1");
+	for ( i=0; i<members.length; i++ ) {
+		for ( var key in members[i] ) {
+			for ( q = 1; q <= 6; q++ ) {
+				if (( chkbx = document.getElementById(key + "." + q)) != null ){
+					chkbx.setAttribute("onclick", "return false;");
+				} 
+			}
+		}
+	}
+
+	var today = new Date();
+	txt = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + "\n\n";
+	txt += "\t1234\n";
+	for ( i=0; i<members.length; i++ ) {
+		for ( var key in members[i] ) {
+			txt += members[i][key] + "\t";
+			for ( q = 1; q <= 6; q++ ) {
+				if ( document.getElementById(key + "." + q) != null ) {
+					if ( document.getElementById(key + "." + q).checked ) {
+						txt += "o";
+					} else {
+						txt += "-";
+					}
+				} else {
+					txt += "-";
+				}
+			}
+			txt += "\n";
+		}
+	}
+	document.getElementById("textarea1").value = txt;
+	document.getElementById("textarea1").select();
+	document.execCommand('copy');
+}
+
+function defreeze(){
+	var table = document.getElementById("tableID1");
+	for ( i=0; i<members.length; i++ ) {
+		for ( var key in members[i] ) {
+			for ( q = 1; q <= 6; q++ ) {
+				if (( chkbx = document.getElementById(key + "." + q)) != null ){
+					chkbx.setAttribute("onclick", "return true;");
+				}
+			}
+		}
+	}
+}
+
+function member_filter(){
+	var table = document.getElementById("tableID1");
+	var j = 0;
+	for ( i=0; i<members.length; i++ ) {
+		for ( var key in members[i] ) {
+			if ( document.getElementById(key) != null ){
+				j++;
+				if (!document.getElementById(key).checked){
+					table.deleteRow(j);
+					j--;
+				}
+			}
+		}
+		j++;
+	}
+}
+function member_unfilter(){
+	var table = document.getElementById("tableID1");
+	var j = 0;
+	for ( i=0; i<members.length; i++ ) {
+		for ( var key in members[i] ) {
+			j++;
+			if ( document.getElementById(key) == null ){
+
+				tr = table.insertRow(j);
+				tr.insertCell(-1).innerHTML = key;
+				chkbx = document.createElement("input");
+				chkbx.setAttribute("type", "checkbox");
+				chkbx.setAttribute("id", key);
+				tr.insertCell(-1).appendChild(chkbx);
+
+				tr.insertCell(-1).innerHTML = members[i][key];
+				for ( q = 1; q <= 6; q++ ) {
+					td = tr.insertCell(-1);
+					chkbx = document.createElement("input");
+					chkbx.setAttribute("type", "checkbox");
+					chkbx.setAttribute("id", key + "." + q);
+					td.appendChild(chkbx);
+				}
+			}
+		}
+		j++;
+	}
+}
+
+</script>
+</head>
+<body>
+<form name="score">
+<div id="tableID"></div>
+
+<p><table>
+<tr>
+<td><input type="button" value="filter" onclick=member_filter()>
+<td><input type="button" value="unfilter" onclick=member_unfilter()>
+</tr>
+<tr>
+<td><input type="button" value="freeze" onclick=freeze()>
+<td><input type="button" value="defreeze" onclick=defreeze()>
+</tr>
+</table>
+<p><textarea id="textarea1"></textarea>
+</form>
+</body>
+</html>
