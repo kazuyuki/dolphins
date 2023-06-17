@@ -6,15 +6,51 @@
 <title>Dolphins order</title>
 <script tyep="text/javascript">
 var members = [
-	{ 4:"りゅうのすけ", 5:"じゅんぺい", 6:"そうた", 7:"てお", 8:"けいたろう", 9:"しおん", 10:"えいじ", 11:"ちはや", 12:"そうま", 13:"ゆうま", 14:"わたる" },
-	{ 15:"ようき" },
-	{ 16:"あおい", 17:"みなと", 18:"きっぺい", 19:"りく", 20:"ゆうき" },
-	{ 21:"たまき", 22:"えいと", 23:"たいせい", 24:"やまと", 25:"だいち" },
-	{ 26:"とうま", 27:"しょうま" }
+	{
+	4:"てお",
+	5:"ゆうま",
+	6:"しおん",
+	7:"えいじ",
+	8:"じゅんぺい",
+	9:"ちはや",
+	10:"りゅうのすけ",
+	11:"そうた",
+	12:"けいたろう",
+	13:"そうま",
+	14:"わたる",
+	15:"ゆうや" 
+	},{
+	16:"ようき"
+	},{
+	17:"あおい",
+	18:"みなと",
+	19:"きっぺい",
+	20:"りく",
+	21:"ゆうき"
+	},{
+	22:"たまき",
+	23:"えいと",
+	24:"たいせい",
+	25:"やまと",
+	26:"だいち" 
+	},{
+	27:"とうま",
+	28:"しょうま",
+	29:"れん"
+	},{
+	30:"ちさと",
+	31:"ゆうま",
+	32:"あおと",
+	33:"こうせい",
+	34:"はる",
+	35:"こうへい",
+	36:"みくも",
+	37:"いつき" 
+	}
 ];
 
 var txt = "";
-
+var NameLenMax = 0;
 window.onload = function(){
 	var table = document.createElement("table");
 	table.setAttribute("id", "tableID1");
@@ -38,14 +74,13 @@ window.onload = function(){
 	for ( i=0; i<members.length; i++ ) {
 		for ( var key in members[i] ) {
 			tr = table.insertRow(-1);
-
 			tr.insertCell(-1).innerHTML = key;
 			chkbx = document.createElement("input");
 			chkbx.setAttribute("type", "checkbox");
 			chkbx.setAttribute("id", key);
 			tr.insertCell(-1).appendChild(chkbx);
-
 			tr.insertCell(-1).innerHTML = members[i][key];
+			if ( NameLenMax < members[i][key].length ) NameLenMax = members[i][key].length;
 			for ( q = 1; q <= 6; q++ ) {
 				td = tr.insertCell(-1);
 				chkbx = document.createElement("input");
@@ -69,24 +104,23 @@ function freeze(){
 			for ( q = 1; q <= 6; q++ ) {
 				if (( chkbx = document.getElementById(key + "." + q)) != null ){
 					chkbx.setAttribute("onclick", "return false;");
-				} 
+				}
 			}
 		}
 	}
 
 	var today = new Date();
-	txt = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + "\n\n";
-	txt += "\t1234\n";
+	txt = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + "\n";
+	for ( i=0; i<NameLenMax; i++ ) txt += "  ";
+	txt += " 1234\n";
 	for ( i=0; i<members.length; i++ ) {
 		for ( var key in members[i] ) {
-			txt += members[i][key] + "\t";
+			if (document.getElementById(key) == null) continue;
+			txt += members[i][key] + " ";
+			for ( j=0; j < NameLenMax - members[i][key].length; j++) txt +="  ";
 			for ( q = 1; q <= 6; q++ ) {
-				if ( document.getElementById(key + "." + q) != null ) {
-					if ( document.getElementById(key + "." + q).checked ) {
-						txt += "o";
-					} else {
-						txt += "-";
-					}
+				if ( document.getElementById(key + "." + q).checked ) {
+					txt += "o";
 				} else {
 					txt += "-";
 				}
@@ -128,6 +162,7 @@ function member_filter(){
 		j++;
 	}
 }
+
 function member_unfilter(){
 	var table = document.getElementById("tableID1");
 	var j = 0;
