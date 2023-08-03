@@ -199,7 +199,7 @@ function save_order() {
 		var grade = [];
 		for ( var key in members[i] ) {
 			if ( document.getElementById(key) == null ){
-				console.log(key);
+				//console.log("[E]" + key);
 				continue;
 			}
 			var personalOrder = [];
@@ -220,19 +220,20 @@ function save_order() {
 		}
 		//console.log(grade);
 		order[i] = grade;
+		//console.log("[D]" + order[i])
 	}
 	localStorage.setItem('order', JSON.stringify(order));
-	console.log(JSON.stringify(order));
+	//console.log(JSON.stringify(order));
 }
 
 function load_order() {
 	var order = JSON.parse(localStorage.getItem('order'));
 	if ( order == null ) { return }
-	console.log(localStorage.getItem('order'));
-	//if (!( 'length' in order )) { return }
+	//console.log("[D]" + localStorage.getItem('order'));
 	for ( var grade =0; grade < order.length; grade++ ) {
 		for ( var key in members[grade] ) {
-			if ( document.getElementById(key) == null ) { continue }
+			if ( order[grade][key] == null ) { continue }
+			//console.log(["D]" + key);
 			document.getElementById(key).checked = order[grade][key][0];
 			for ( var period = 1; period <= 6; period++ ) {
 				document.getElementById(key + "." + period).checked = order[grade][key][period];
