@@ -1,0 +1,17 @@
+{
+  "background_color": "#ffffff",
+  "description": "Planner for the Players of the Mini basketball team.",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "Mini Basket Ball Planner",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "MiniBasketPlanner",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "categories": [],
+  "screenshots": [],
+  "icons": [],
+  "shortcuts": [],
+  "id": "MiyamotoKazuyuki"
+}
