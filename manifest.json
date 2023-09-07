@@ -1,9 +1,9 @@
 {
   "background_color": "#ffffff",
-  "description": "Planner for the Players of the Mini basketball team.",
+  "description": "Order planner for mini basketball team.",
   "dir": "ltr",
   "display": "standalone",
-  "name": "Mini Basket Ball Planner",
+  "name": "Mini Basketball Planner",
   "orientation": "any",
   "scope": "/",
   "short_name": "MiniBasketPlanner",
