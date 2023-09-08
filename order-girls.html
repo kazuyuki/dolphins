@@ -178,6 +178,60 @@ function member_unfilter(){
 	}
 }
 
+function save_order() {
+	// DataToSave[{4:[0,1,2,3,4,5,6], 5:[0,1,2,3,4,5,6]},{},{},,]
+	var order = [];
+	for ( i=0; i<members.length; i++ ) {
+		var grade = [];
+		for ( var key in members[i] ) {
+			if ( document.getElementById(key) == null ){
+				//console.log("[E]" + key);
+				continue;
+			}
+			var personalOrder = [];
+			if ( document.getElementById(key).checked ) {
+				personalOrder[0] = 1;
+			} else {
+				personalOrder[0] = 0;
+			}
+			for ( q=1; q<=6; q++ ) {
+				if ( document.getElementById(key + "." + q).checked ) {
+					personalOrder[q]=1;
+				} else {
+					personalOrder[q]=0;
+				}
+			}
+			//console.log(personalOrder);
+			grade[key] = personalOrder;
+		}
+		//console.log(grade);
+		order[i] = grade;
+		//console.log("[D]" + order[i])
+	}
+	localStorage.setItem('order', JSON.stringify(order));
+	//console.log(JSON.stringify(order));
+}
+
+function load_order() {
+	var order = JSON.parse(localStorage.getItem('order'));
+	if ( order == null ) { return }
+	//console.log("[D]" + localStorage.getItem('order'));
+	for ( var grade =0; grade < order.length; grade++ ) {
+		for ( var key in members[grade] ) {
+			if ( order[grade][key] == null ) { continue }
+			//console.log(["D]" + key);
+			document.getElementById(key).checked = order[grade][key][0];
+			for ( var period = 1; period <= 6; period++ ) {
+				document.getElementById(key + "." + period).checked = order[grade][key][period];
+			}
+		}
+	}
+}
+
+function clear_order() {
+	localStorage.removeItem('order');
+}
+
 </script>
 </head>
 <body>
@@ -186,6 +240,10 @@ function member_unfilter(){
 
 <p><table>
 <tr>
+<td><input type="button" value="save" onclick=save_order()>
+<td><input type="button" value="load" onclick=load_order()>
+<td><input type="button" value="clear" onclick=clear_order()>
+</tr>
 <td><input type="button" value="filter" onclick=member_filter()>
 <td><input type="button" value="unfilter" onclick=member_unfilter()>
 </tr>
