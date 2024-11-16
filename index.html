@@ -2,57 +2,59 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-<link rel="manifest" href="/manifest.json">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<!--link rel="manifest" href="/manifest.json"-->
 <title>Dolphins order</title>
 <script tyep="text/javascript">
-var members = [
-	{
-	1:"ようき"
-	},{
-	2:"あおい",
-	3:"みなと",
-	4:"きっぺい",
-	5:"りく",
-	6:"ゆうき",
-	},{
-	7:"たまき",
-	8:"えいと",
-	9:"たいせい",
-	10:"やまと",
-	11:"だいち" 
-	},{
-	12:"とうま",
-	13:"れん"
-	},{
-	14:"ちさと",
-	15:"ゆうま",
-	16:"あおと",
-	17:"こうせい",
-	18:"はる",
-	19:"こうへい",
-	20:"みくも",
-	21:"いつき" 
-	},{
-	22:"めい",
-	23:"わかな",
-	24:"えま"
-	},{
-	25:"のぞみ",
-	26:"あむ",
-	27:"ないる",
-	28:"えま",
-	29:"みく",
-	30:"ななみ"
-	},{
-	31:"ことみ",
-	32:"たまえ"
-	},{
-	33:"ひよ"
-	},{
-	34:"さゆみ",
-	35:"さほ"
-	}
+let members = [
+	[
+	"ようき",
+	"めい",
+	"わかな",
+	"えま",
+	"ゆな"
+	],[
+	"あおい",
+	"みなと",
+	"きっぺい",
+	"ゆうき",
+	"のぞみ",
+	"ないる",
+	"みく",
+	"ななみ"
+	],[
+	"えいと",
+	"たいせい",
+	"やまと",
+	"だいち",
+	"しょうたろう",
+	"きよのぶ",
+	"ことみ",
+	"たまえ",
+	"あん",
+	"りお"
+	],[
+	"とうま",
+	"れん",
+	"はる",
+	"ひよ",
+	"あいり"
+	],[
+	"ちさと",
+	"ゆうま",
+	"あおと",
+	"こうせい",
+	"はる",
+	"こうへい",
+	"みくも",
+	"いつき",
+	"さゆみ",
+	"さほ",
+	"えりな",
+	"るな"
+	],[
+	"ちあき"
+	]
 ];
 
 var txt = "";
@@ -64,7 +66,7 @@ window.onload = function(){
 
 	//## Table Header
 	tr = table.insertRow(-1);
-	for ( i=0; i<3; i++ ){
+	for ( i=0; i<2; i++ ){
 		th = document.createElement("th");
 		tr.appendChild(th);
 	}
@@ -78,20 +80,20 @@ window.onload = function(){
 
 	//## Table Body
 	for ( i=0; i<members.length; i++ ) {
-		for ( var key in members[i] ) {
+		for ( let j=0; j<members[i].length; j++ ) {
+			//console.log(members[i][j]);
 			tr = table.insertRow(-1);
-			tr.insertCell(-1).innerHTML = key;
 			chkbx = document.createElement("input");
 			chkbx.setAttribute("type", "checkbox");
-			chkbx.setAttribute("id", key);
+			chkbx.setAttribute("id", i + "." + j);
 			tr.insertCell(-1).appendChild(chkbx);
-			tr.insertCell(-1).innerHTML = members[i][key];
-			if ( NameLenMax < members[i][key].length ) NameLenMax = members[i][key].length;
+			tr.insertCell(-1).innerHTML = members[i][j];
+			if ( NameLenMax < members[i][j].length ) NameLenMax = members[i][j].length;
 			for ( q = 1; q <= 6; q++ ) {
 				td = tr.insertCell(-1);
 				chkbx = document.createElement("input");
 				chkbx.setAttribute("type", "checkbox");
-				chkbx.setAttribute("id", key + "." + q);
+				chkbx.setAttribute("id", i + "." + j + "." + q);
 				td.appendChild(chkbx);
 			}
 		}
@@ -106,9 +108,9 @@ window.onload = function(){
 function freeze(){
 	var table = document.getElementById("tableID1");
 	for ( i=0; i<members.length; i++ ) {
-		for ( var key in members[i] ) {
+		for ( j=0; j<members[i].length; j++ ) {
 			for ( q = 1; q <= 6; q++ ) {
-				if (( chkbx = document.getElementById(key + "." + q)) != null ){
+				if (( chkbx = document.getElementById(i+ "." +j+ "." +q)) != null ){
 					chkbx.setAttribute("onclick", "return false;");
 				}
 			}
@@ -120,16 +122,18 @@ function freeze(){
 	for ( i=0; i<NameLenMax; i++ ) txt += "  ";
 	txt += " 1234\n";
 	for ( i=0; i<members.length; i++ ) {
-		for ( var key in members[i] ) {
-			if (document.getElementById(key) == null) continue;
-			txt += members[i][key] + " ";
-			for ( j=0; j < NameLenMax - members[i][key].length; j++) txt +="  ";
+		for ( j=0; j<members[i].length; j++ ) {
+			txt += members[i][j] + " ";
+			for ( k=0; k < NameLenMax - members[i][j].length; k++) txt +="  ";
 			for ( q = 1; q <= 6; q++ ) {
-				if ( document.getElementById(key + "." + q).checked ) {
-					txt += "o";
-				} else {
-					txt += "-";
+				if ( document.getElementById(i+ "." +j+ "." +q) != null ){
+					if ( document.getElementById(i+ "." +j+ "." +q).checked ) {
+						txt += "o";
+					} else {
+						txt += "-";
+					}
 				}
+				//else { console.log("[D]"+i+ "." +j+ "." +q) }
 			}
 			txt += "\n";
 		}
@@ -142,9 +146,9 @@ function freeze(){
 function defreeze(){
 	var table = document.getElementById("tableID1");
 	for ( i=0; i<members.length; i++ ) {
-		for ( var key in members[i] ) {
+		for ( j=0; j<members[i].length; j++ ) {
 			for ( q = 1; q <= 6; q++ ) {
-				if (( chkbx = document.getElementById(key + "." + q)) != null ){
+				if (( chkbx = document.getElementById(i+ "." +j+ "." +q)) != null ){
 					chkbx.setAttribute("onclick", "return true;");
 				}
 			}
@@ -154,37 +158,36 @@ function defreeze(){
 
 function member_filter(){
 	var table = document.getElementById("tableID1");
-	var j = 0;
+	let k = 0;
 	for ( i=0; i<members.length; i++ ) {
-		for ( var key in members[i] ) {
+		for ( j=0; j<members[i].length; j++ ) {
+			let key = i+"."+j;
 			if ( document.getElementById(key) != null ){
-				j++;
+				k++;
 				if (!document.getElementById(key).checked){
-					table.deleteRow(j);
-					j--;
+					table.deleteRow(k);
+					k--;
 				}
 			}
 		}
-		j++;
+		k++;
 	}
 }
 
 function member_unfilter(){
 	var table = document.getElementById("tableID1");
-	var j = 0;
+	var k = 0;
 	for ( i=0; i<members.length; i++ ) {
-		for ( var key in members[i] ) {
-			j++;
+		for ( j=0; j<members[i].length; j++ ) {
+			let key = i+"."+j;
+			k++;
 			if ( document.getElementById(key) == null ){
-
-				tr = table.insertRow(j);
-				tr.insertCell(-1).innerHTML = key;
+				tr = table.insertRow(k);
 				chkbx = document.createElement("input");
 				chkbx.setAttribute("type", "checkbox");
 				chkbx.setAttribute("id", key);
 				tr.insertCell(-1).appendChild(chkbx);
-
-				tr.insertCell(-1).innerHTML = members[i][key];
+				tr.insertCell(-1).innerHTML = members[i][j];
 				for ( q = 1; q <= 6; q++ ) {
 					td = tr.insertCell(-1);
 					chkbx = document.createElement("input");
@@ -194,16 +197,19 @@ function member_unfilter(){
 				}
 			}
 		}
-		j++;
+		k++;
 	}
 }
 
 function save_order() {
 	// DataToSave[{4:[0,1,2,3,4,5,6], 5:[0,1,2,3,4,5,6]},{},{},,]
+	// DataToSave[	[[0,1,2,3,4,5,6],[0,1,2,3,4,5,6]], [], [], [], [], []]
 	var order = [];
 	for ( i=0; i<members.length; i++ ) {
 		var grade = [];
-		for ( var key in members[i] ) {
+		for ( j=0; j<members[i].length; j++ ) {
+		//for ( var key in members[i] ) {
+			let key = i+"."+j;
 			if ( document.getElementById(key) == null ){
 				//console.log("[E]" + key);
 				continue;
@@ -222,7 +228,8 @@ function save_order() {
 				}
 			}
 			//console.log(personalOrder);
-			grade[key] = personalOrder;
+			//grade[i][j] = personalOrder;
+			grade[j] = personalOrder;
 		}
 		//console.log(grade);
 		order[i] = grade;
@@ -237,12 +244,14 @@ function load_order() {
 	if ( order == null ) { return }
 	//console.log("[D]" + localStorage.getItem('order'));
 	for ( var grade =0; grade < order.length; grade++ ) {
-		for ( var key in members[grade] ) {
+		//for ( var key in members[grade] ) {
+		for ( key=0; key<members[grade].length; key++ ) {
 			if ( order[grade][key] == null ) { continue }
-			//console.log(["D]" + key);
-			document.getElementById(key).checked = order[grade][key][0];
+			let k = grade + "." + key
+			//console.log("[D]" + k);
+			document.getElementById(k).checked = order[grade][key][0];
 			for ( var period = 1; period <= 6; period++ ) {
-				document.getElementById(key + "." + period).checked = order[grade][key][period];
+				document.getElementById(k + "." + period).checked = order[grade][key][period];
 			}
 		}
 	}
